@@ -37,9 +37,10 @@ test:
     - time_machine
   commands:
     - pip check
-    # can't test on windows due to use of ``time.tzset``
-    - pytest -vv -k 'not (test_move_to_datetime or test_fixture_used_tick_true) src/tests'  # [osx and arm64]
-    - pytest -v src/tests'  # [not (win or (osx and arm64))]
+    # test_move_to_datetime and test_fixture_used_tick_true failing on macos due to a failed 'first < second' assertion
+    # whereby first = second. No idea why.
+    - pytest -vv -k 'not (test_move_to_datetime or test_fixture_used_tick_true)' src/tests  # [osx and arm64]
+    - pytest -v src/tests  # [not (win or (osx and arm64))]
   requires:
     - backports           # [py>=310]
     - backports.zoneinfo  # [py<=39]
