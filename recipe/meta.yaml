@@ -22,10 +22,11 @@ requirements:
   build:
     - python
     - {{ compiler('c') }}
-    - wheel
   host:
     - pip
     - python
+    - setuptools
+    - wheel
   run:
     - python
     - python-dateutil
