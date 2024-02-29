@@ -37,8 +37,8 @@ test:
   commands:
     - pip check
     # can't test on windows due to use of ``time.tzset``
-    - pytest src/tests -vv -k 'not (test_move_to_datetime or test_fixture_used_tick_true)'  # [osx and arm64]
-    - pytest src/tests -vv -k'  # [not (win or (osx and arm64))]
+    - pytest -vv -k 'not (test_move_to_datetime or test_fixture_used_tick_true) src/tests'  # [osx and arm64]
+    - pytest -v src/tests'  # [not (win or (osx and arm64))]
   requires:
     - backports
     - pip
