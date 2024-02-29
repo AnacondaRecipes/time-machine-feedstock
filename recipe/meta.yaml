@@ -20,7 +20,6 @@ build:
 
 requirements:
   build:
-    - python
     - {{ compiler('c') }}
   host:
     - pip
