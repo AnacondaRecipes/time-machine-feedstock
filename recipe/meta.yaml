@@ -20,8 +20,7 @@ build:
 
 requirements:
   build:
-    - python                                 # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+    - python
     - {{ compiler('c') }}
   host:
     - pip
@@ -42,6 +41,7 @@ test:
   requires:
     - backports.zoneinfo
     - pip
+    - pytest
 
 about:
   home: https://github.com/adamchainz/time-machine
