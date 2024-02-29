@@ -9,7 +9,7 @@ package:
 source:
   - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ alt_name }}-{{ version }}.tar.gz
     sha256: c23b2408e3adcedec84ea1131e238f0124a5bc0e491f60d1137ad7239b37c01a
-  - folder: src
+  - folder: src_for_test
     url: https://github.com/adamchainz/{{ name }}/archive/refs/tags/{{ version }}.tar.gz
     sha256: a0892ada963bd16fdaf657d71ef9bec614931c467a935f3217bf08906fe3bd11
 
@@ -33,7 +33,7 @@ requirements:
 # skipping tests on py39 because backport.zoneinfo is not available for py39
 test:
   source_files:
-    - src/tests
+    - src_for_test/tests
   imports:
     - time_machine
   commands:
@@ -41,8 +41,8 @@ test:
     # test_move_to_datetime and test_fixture_used_tick_true failing on macos due to a failed 'first < second' assertion
     # whereby first = second. No idea why.
     # on windows tests cannot be executed because in conftest.py
-    - pytest -v -k 'not (test_move_to_datetime or test_fixture_used_tick_true)' src/tests  # [osx and arm64 and (not py==39)]
-    - pytest -v src/tests  # [not (win or (osx and arm64) or py==39)]
+    - pytest -v -k 'not (test_move_to_datetime or test_fixture_used_tick_true)' src_for_test/tests  # [osx and arm64 and (not py==39)]
+    - pytest -v src_for_test/tests  # [not (win or (osx and arm64) or py==39)]
   requires:
     - backports           # [py>=310]
     - backports.zoneinfo  # [py<39]
