@@ -31,6 +31,7 @@ requirements:
     - python
     - python-dateutil
 
+# skipping tests on py39 because backport.zoneinfo is not available for py39
 test:
   source_files:
     - src/tests
@@ -40,11 +41,11 @@ test:
     - pip check
     # test_move_to_datetime and test_fixture_used_tick_true failing on macos due to a failed 'first < second' assertion
     # whereby first = second. No idea why.
-    - pytest -vv -k 'not (test_move_to_datetime or test_fixture_used_tick_true)' src/tests  # [osx and arm64]
-    - pytest -v src/tests  # [not (win or (osx and arm64))]
+    - pytest -vv -k 'not (test_move_to_datetime or test_fixture_used_tick_true)' src/tests  # [osx and arm64 and (not py==39)]
+    - pytest -v src/tests  # [not ((win or (osx and arm64)) and py==39)]
   requires:
     - backports           # [py>=310]
-    - backports.zoneinfo  # [py<=39]
+    - backports.zoneinfo  # [py<39]
     - pip
     - pytest
 
