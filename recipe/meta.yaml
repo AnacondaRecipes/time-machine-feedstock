@@ -39,7 +39,6 @@ test:
     # can't test on windows due to use of ``time.tzset``
     - pytest src/tests -vv  # [not win]
   requires:
-    - backports.zoneinfo
     - pip
     - pytest
 
