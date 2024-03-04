@@ -7,7 +7,8 @@ package:
   version: {{ version }}
 
 source:
-  - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ alt_name }}-{{ version }}.tar.gz
+  - folder: dist
+    url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ alt_name }}-{{ version }}.tar.gz
     sha256: c23b2408e3adcedec84ea1131e238f0124a5bc0e491f60d1137ad7239b37c01a
   - folder: src_for_test
     url: https://github.com/adamchainz/{{ name }}/archive/refs/tags/{{ version }}.tar.gz
@@ -15,7 +16,7 @@ source:
 
 build:
   skip: true  # [py<38 or py>=312]
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  script: cd dist && {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
 
 requirements:
@@ -58,7 +59,7 @@ about:
     Python, built-in functions are immutable, but time-machine overcomes this by using C code to replace their function
     pointers.
   license: MIT
-  license_file: LICENSE
+  license_file: dist/LICENSE
   license_family: MIT
   doc_url: https://adamj.eu/tech/2020/06/03/introducing-time-machine/
   dev_url: https://github.com/adamchainz/time-machine
