@@ -30,7 +30,6 @@ requirements:
     - python
     - python-dateutil
 
-# skipping tests on py39 because backport.zoneinfo is not available for py39
 test:
   source_files:
     - src_for_test/tests
