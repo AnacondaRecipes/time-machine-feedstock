@@ -48,6 +48,7 @@ test:
     - backports.zoneinfo  # [py<39]
     - pip
     - pytest
+    - pytest-randomly
 
 about:
   home: https://github.com/adamchainz/time-machine
