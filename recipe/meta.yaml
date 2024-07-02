@@ -65,5 +65,10 @@ about:
   dev_url: https://github.com/adamchainz/time-machine
 
 extra:
+  anaconda-services:
+    ref: https://anaconda.zendesk.com/agent/tickets/48409
+    reason: Dependency for pendulum
+    recipe-maintainers:
+      - ianaobi
   recipe-maintainers:
     - bollwyvl
