@@ -1,4 +1,6 @@
-{% set version = "2.16.0" %}
+{% set name = "time-machine" %}
+{% set alt_name = name.replace('-', '_') %}
+{% set version = "2.13.0" %}
 
 # can't test on...
 #  - (windows)/any (aarch64|ppcle64)/py<312 due to use of ``time.tzset``?
@@ -10,11 +12,11 @@ package:
 
 source:
   - folder: dist
-    url: https://pypi.io/packages/source/t/time-machine/time_machine-{{ version }}.tar.gz
-    sha256: 4a99acc273d2f98add23a89b94d4dd9e14969c01214c8514bfa78e4e9364c7e2
-  - folder: src
-    url: https://github.com/adamchainz/time-machine/archive/refs/tags/{{ version }}.tar.gz
-    sha256: d2ed8ebef04133d69bce09114bbf66be0d404d725597874a644318af6e0b3e28
+    url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ alt_name }}-{{ version }}.tar.gz
+    sha256: c23b2408e3adcedec84ea1131e238f0124a5bc0e491f60d1137ad7239b37c01a
+  - folder: src_for_test
+    url: https://github.com/adamchainz/{{ name }}/archive/refs/tags/{{ version }}.tar.gz
+    sha256: a0892ada963bd16fdaf657d71ef9bec614931c467a935f3217bf08906fe3bd11
 
 build:
   skip: true  # [py<39]
@@ -35,7 +37,7 @@ requirements:
 
 test:
   source_files:
-    - src/tests
+    - src_for_test/tests
   imports:
     - time_machine
   commands:
@@ -43,10 +45,10 @@ test:
     # test_move_to_datetime and test_fixture_used_tick_true failing on macos due to a failed 'first < second' assertion
     # whereby first = second. No idea why.
     # on windows tests cannot be executed because in conftest.py
-    - pytest -v -k 'not (test_move_to_datetime or test_fixture_used_tick_true)' src/tests  # [osx and arm64 and (not py==39)]
-    - pytest -v src/tests  # [not (win or (osx and arm64) or py==39)]
+    - pytest -v -k 'not (test_move_to_datetime or test_fixture_used_tick_true)' src_for_test/tests  # [osx and arm64 and (not py==39)]
+    - pytest -v src_for_test/tests  # [not (win or (osx and arm64) or py==39)]
     {% if can_test %}
-    - coverage run --source=time_machine --branch -m pytest src/tests -vv --color=yes --tb=long
+    - coverage run --source=time_machine --branch -m pytest src_for_test/tests -vv --color=yes --tb=long
     - coverage report --show-missing --skip-covered --fail-under=98
     {% endif %}
   requires:
