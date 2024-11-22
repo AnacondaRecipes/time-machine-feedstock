@@ -7,7 +7,7 @@
 {% set can_test = osx or linux64 or (linux and py >= 312) %}
 
 package:
-  name: time-machine
+  name: {{ name }}
   version: {{ version }}
 
 source:
@@ -25,7 +25,7 @@ build:
 
 requirements:
   build:
-    - {{ compiler("c") }}
+    - {{ compiler('c') }}
   host:
     - pip
     - python
