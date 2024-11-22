@@ -35,7 +35,7 @@ requirements:
 
 test:
   source_files:
-    - src_for_test/tests
+    - src/tests
   imports:
     - time_machine
   commands:
@@ -43,13 +43,21 @@ test:
     # test_move_to_datetime and test_fixture_used_tick_true failing on macos due to a failed 'first < second' assertion
     # whereby first = second. No idea why.
     # on windows tests cannot be executed because in conftest.py
-    - pytest -v -k 'not (test_move_to_datetime or test_fixture_used_tick_true)' src_for_test/tests  # [osx and arm64 and (not py==39)]
-    - pytest -v src_for_test/tests  # [not (win or (osx and arm64) or py==39)]
+    - pytest -v -k 'not (test_move_to_datetime or test_fixture_used_tick_true)' src/tests  # [osx and arm64 and (not py==39)]
+    - pytest -v src/tests  # [not (win or (osx and arm64) or py==39)]
+    {% if can_test %}
+    - coverage run --source=time_machine --branch -m pytest src/tests -vv --color=yes --tb=long
+    - coverage report --show-missing --skip-covered --fail-under=98
+    {% endif %}
   requires:
-    - backports.zoneinfo  # [py<39]
     - pip
+    {% if can_test %}
+    - backports.zoneinfo  # [py<39]
+    - coverage
     - pytest
     - pytest-randomly
+    - python-dateutil
+    {% endif %}
 
 about:
   home: https://github.com/adamchainz/time-machine
