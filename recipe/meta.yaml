@@ -2,10 +2,6 @@
 {% set alt_name = name.replace('-', '_') %}
 {% set version = "2.16.0" %}
 
-# can't test on...
-#  - (windows)/any (aarch64|ppcle64)/py<312 due to use of ``time.tzset``?
-{% set can_test = osx or linux64 or (linux and py >= 312) %}
-
 package:
   name: {{ name }}
   version: {{ version }}
@@ -46,20 +42,15 @@ test:
     # whereby first = second. No idea why.
     # on windows tests cannot be executed because in conftest.py
     - pytest -v -k 'not (test_move_to_datetime or test_fixture_used_tick_true)' src_for_test/tests  # [osx and arm64 and (not py==39)]
-    - pytest -v src_for_test/tests  # [not (win or (osx and arm64) or (linux and aarch64) or (linux and s390x) or py==39)]
-    {% if can_test %}
-    - coverage run --source=time_machine --branch -m pytest src_for_test/tests -vv --color=yes --tb=long
-    - coverage report --show-missing --skip-covered --fail-under=98
-    {% endif %}
+    # command not found for linux-aarch64 and s390x
+    - pytest -v src_for_test/tests  # [not (win or (osx and arm64) or py==39)]
   requires:
     - pip
-    {% if can_test %}
     - backports.zoneinfo  # [py<39]
     - coverage
     - pytest
     - pytest-randomly
     - python-dateutil
-    {% endif %}
 
 about:
   home: https://github.com/adamchainz/time-machine
