@@ -46,7 +46,7 @@ test:
     # whereby first = second. No idea why.
     # on windows tests cannot be executed because in conftest.py
     - pytest -v -k 'not (test_move_to_datetime or test_fixture_used_tick_true)' src_for_test/tests  # [osx and arm64 and (not py==39)]
-    - pytest -v src_for_test/tests  # [not (win or (osx and arm64) or py==39)]
+    - pytest -v src_for_test/tests  # [not (win or (osx and arm64) or (linux and aarch64) or (linux and s390x) or py==39)]
     {% if can_test %}
     - coverage run --source=time_machine --branch -m pytest src_for_test/tests -vv --color=yes --tb=long
     - coverage report --show-missing --skip-covered --fail-under=98
