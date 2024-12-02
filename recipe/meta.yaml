@@ -42,7 +42,6 @@ test:
     # whereby first = second. No idea why.
     # on windows tests cannot be executed because in conftest.py
     - pytest -v -k 'not (test_move_to_datetime or test_fixture_used_tick_true)' src_for_test/tests  # [osx and arm64 and (not py==39)]
-    # command not found for linux-aarch64 and s390x
     - pytest -v src_for_test/tests  # [not (win or (osx and arm64) or py==39)]
   requires:
     - pip
