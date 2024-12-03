@@ -1,6 +1,6 @@
 {% set name = "time-machine" %}
 {% set alt_name = name.replace('-', '_') %}
-{% set version = "2.13.0" %}
+{% set version = "2.16.0" %}
 
 package:
   name: {{ name }}
@@ -9,13 +9,13 @@ package:
 source:
   - folder: dist
     url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ alt_name }}-{{ version }}.tar.gz
-    sha256: c23b2408e3adcedec84ea1131e238f0124a5bc0e491f60d1137ad7239b37c01a
+    sha256: 4a99acc273d2f98add23a89b94d4dd9e14969c01214c8514bfa78e4e9364c7e2
   - folder: src_for_test
     url: https://github.com/adamchainz/{{ name }}/archive/refs/tags/{{ version }}.tar.gz
-    sha256: a0892ada963bd16fdaf657d71ef9bec614931c467a935f3217bf08906fe3bd11
+    sha256: d2ed8ebef04133d69bce09114bbf66be0d404d725597874a644318af6e0b3e28
 
 build:
-  skip: true  # [py<38 or py>=312]
+  skip: true  # [py<39]
   script: cd dist && {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
 
@@ -44,10 +44,12 @@ test:
     - pytest -v -k 'not (test_move_to_datetime or test_fixture_used_tick_true)' src_for_test/tests  # [osx and arm64 and (not py==39)]
     - pytest -v src_for_test/tests  # [not (win or (osx and arm64) or py==39)]
   requires:
-    - backports.zoneinfo  # [py<39]
     - pip
+    - backports.zoneinfo  # [py<39]
+    - coverage
     - pytest
     - pytest-randomly
+    - python-dateutil
 
 about:
   home: https://github.com/adamchainz/time-machine
