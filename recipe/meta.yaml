@@ -1,6 +1,6 @@
 {% set name = "time-machine" %}
 {% set alt_name = name.replace('-', '_') %}
-{% set version = "2.16.0" %}
+{% set version = "3.2.0" %}
 
 package:
   name: {{ name }}
@@ -8,11 +8,11 @@ package:
 
 source:
   - folder: dist
-    url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ alt_name }}-{{ version }}.tar.gz
-    sha256: 4a99acc273d2f98add23a89b94d4dd9e14969c01214c8514bfa78e4e9364c7e2
+    url: https://pypi.org/packages/source/t/time-machine/time_machine-3.2.0.tar.gz
+    sha256: a4ddd1cea17b8950e462d1805a42b20c81eb9aafc8f66b392dd5ce997e037d79
   - folder: src_for_test
     url: https://github.com/adamchainz/{{ name }}/archive/refs/tags/{{ version }}.tar.gz
-    sha256: d2ed8ebef04133d69bce09114bbf66be0d404d725597874a644318af6e0b3e28
+    sha256: c74880a913e25b30de6be7645fa81b8ff374f0332dbbfd6c22d9445729cee637
 
 build:
   skip: true  # [py<39]
