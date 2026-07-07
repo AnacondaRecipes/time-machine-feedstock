@@ -1,5 +1,4 @@
 {% set name = "time-machine" %}
-{% set alt_name = name.replace('-', '_') %}
 {% set version = "3.2.0" %}
 
 package:
@@ -8,25 +7,25 @@ package:
 
 source:
   - folder: dist
-    url: https://pypi.org/packages/source/t/time-machine/time_machine-3.2.0.tar.gz
+    url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_') }}-3.2.0.tar.gz
     sha256: a4ddd1cea17b8950e462d1805a42b20c81eb9aafc8f66b392dd5ce997e037d79
   - folder: src_for_test
     url: https://github.com/adamchainz/{{ name }}/archive/refs/tags/{{ version }}.tar.gz
     sha256: c74880a913e25b30de6be7645fa81b8ff374f0332dbbfd6c22d9445729cee637
 
 build:
-  skip: true  # [py<39]
+  skip: true  # [py<310]
   script: cd dist && {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
   host:
     - pip
     - python
-    - setuptools
-    - wheel
+    - setuptools >=77
   run:
     - python
     - python-dateutil
@@ -34,20 +33,19 @@ requirements:
 test:
   source_files:
     - src_for_test/tests
+    - src_for_test/pyproject.toml
   imports:
     - time_machine
   commands:
     - pip check
-    # test_move_to_datetime and test_fixture_used_tick_true failing on macos due to a failed 'first < second' assertion
-    # whereby first = second. No idea why.
-    # on windows tests cannot be executed because in conftest.py
-    - pytest -v -k 'not (test_move_to_datetime or test_fixture_used_tick_true)' src_for_test/tests  # [osx and arm64 and (not py==39)]
-    - pytest -v src_for_test/tests  # [not (win or (osx and arm64) or py==39)]
+    # Skip tests on windows - AttributeError: module 'time' has no attribute 'tzset'
+    # ModuleNotFoundError: No module named 'tokenize_rt'
+    - pytest -v src_for_test/tests --ignore=src_for_test/tests/test_cli.py # [not win]
   requires:
     - pip
-    - backports.zoneinfo  # [py<39]
     - coverage
     - pytest
+    - freezegun
     - pytest-randomly
     - python-dateutil
 
