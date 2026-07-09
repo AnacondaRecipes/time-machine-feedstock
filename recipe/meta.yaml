@@ -28,7 +28,8 @@ requirements:
     - setuptools >=77
   run:
     - python
-    - python-dateutil
+  run_constrained:
+    - python-dateutil >=2.8.2
 
 test:
   source_files:
